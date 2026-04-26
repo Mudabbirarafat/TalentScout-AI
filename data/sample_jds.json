@@ -1,0 +1,16 @@
+{
+  "sample_jds": [
+    {
+      "title": "Senior ML Engineer",
+      "jd": "We are hiring a Senior Machine Learning Engineer to join our AI Platform team.\n\nRequirements:\n- 5+ years of experience in Python, TensorFlow or PyTorch\n- Strong background in building and deploying production ML systems\n- Experience with AWS (SageMaker preferred) and Docker/Kubernetes\n- Familiarity with MLflow or similar MLOps tooling\n- Proven track record with recommendation systems or NLP applications\n- Strong SQL skills and experience with large-scale data\n\nRole type: Senior Individual Contributor\nLocation: Bangalore / Remote"
+    },
+    {
+      "title": "NLP / GenAI Engineer",
+      "jd": "We are looking for an AI/NLP Engineer with expertise in Large Language Models.\n\nRequirements:\n- 3-6 years of experience in NLP or Generative AI\n- Hands-on experience with LangChain, LlamaIndex, or similar RAG frameworks\n- Proficiency in Python and HuggingFace Transformers\n- Experience with vector databases (Pinecone, FAISS, Chroma)\n- Familiarity with OpenAI API or GROQ\n- FastAPI for model serving\n\nRole: Mid-Senior NLP/GenAI Engineer"
+    },
+    {
+      "title": "MLOps Engineer",
+      "jd": "MLOps / AI Platform Engineer\n\nRequirements:\n- 4-7 years of experience in DevOps or MLOps\n- Strong Python skills with Airflow or similar orchestration\n- Kubernetes, Docker, Terraform expertise\n- GCP or AWS cloud platform experience\n- MLflow or similar model registries\n- CI/CD pipeline design"
+    }
+  ]
+}

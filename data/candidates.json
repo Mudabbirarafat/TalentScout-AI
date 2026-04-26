@@ -1,0 +1,152 @@
+[
+  {
+    "id": "C001",
+    "name": "Ayesha Raza",
+    "skills": ["Python", "Machine Learning", "TensorFlow", "AWS", "FastAPI", "Docker", "SQL", "MLflow"],
+    "years_experience": 6,
+    "past_roles": ["Senior ML Engineer at Flipkart", "Data Scientist at Razorpay"],
+    "short_summary": "Senior ML engineer with strong production ML systems experience. Built recommendation engines and fraud detection pipelines at scale. Actively looking for senior AI roles.",
+    "location": "Bangalore, India",
+    "education": "B.Tech CSE, IIT Bombay"
+  },
+  {
+    "id": "C002",
+    "name": "Rohan Mehta",
+    "skills": ["JavaScript", "React", "Node.js", "MongoDB", "GraphQL", "TypeScript", "CSS"],
+    "years_experience": 4,
+    "past_roles": ["Frontend Engineer at Swiggy", "Full Stack Developer at a Startup"],
+    "short_summary": "Full-stack developer specializing in React ecosystems and Node.js microservices. Built real-time dashboards for 500K+ users. Open to exploring new tech stacks.",
+    "location": "Mumbai, India",
+    "education": "B.E. IT, Mumbai University"
+  },
+  {
+    "id": "C003",
+    "name": "Priya Nair",
+    "skills": ["Python", "NLP", "Hugging Face", "LangChain", "OpenAI API", "PyTorch", "Vector Databases", "FAISS"],
+    "years_experience": 5,
+    "past_roles": ["NLP Engineer at Sarvam AI", "Research Engineer at IISc"],
+    "short_summary": "NLP specialist with deep expertise in LLMs, RAG pipelines, and fine-tuning. Published research on multilingual models. Very passionate about building AI products.",
+    "location": "Bangalore, India",
+    "education": "M.Tech AI, IISc Bangalore"
+  },
+  {
+    "id": "C004",
+    "name": "Arjun Sharma",
+    "skills": ["DevOps", "Kubernetes", "Terraform", "AWS", "GCP", "CI/CD", "Prometheus", "Helm"],
+    "years_experience": 7,
+    "past_roles": ["DevOps Lead at Paytm", "SRE at Ola"],
+    "short_summary": "Seasoned DevOps engineer who has managed infrastructure at scale for 10M+ user apps. Expert in Kubernetes orchestration and cost optimization. Comfortable in fast-paced environments.",
+    "location": "Delhi, India",
+    "education": "B.Tech, NSIT Delhi"
+  },
+  {
+    "id": "C005",
+    "name": "Sneha Kapoor",
+    "skills": ["Data Engineering", "Apache Spark", "Kafka", "Python", "Airflow", "Snowflake", "dbt", "SQL"],
+    "years_experience": 5,
+    "past_roles": ["Data Engineer at Meesho", "Analytics Engineer at Myntra"],
+    "short_summary": "Data engineer focused on building robust ETL pipelines and data warehouses. Reduced pipeline latency by 60% at Meesho. Currently exploring ML engineering opportunities.",
+    "location": "Hyderabad, India",
+    "education": "B.Tech CSE, NIT Warangal"
+  },
+  {
+    "id": "C006",
+    "name": "Vikram Patel",
+    "skills": ["Python", "Deep Learning", "Computer Vision", "OpenCV", "ONNX", "Edge AI", "TensorFlow Lite"],
+    "years_experience": 3,
+    "past_roles": ["Computer Vision Engineer at Detect Technologies", "Research Intern at DRDO"],
+    "short_summary": "Computer vision engineer with hands-on experience in defect detection and edge inference. Good fundamentals in deep learning. Eager to grow into senior AI engineering roles.",
+    "location": "Pune, India",
+    "education": "M.Tech ECE, IIT Kharagpur"
+  },
+  {
+    "id": "C007",
+    "name": "Divya Menon",
+    "skills": ["Product Management", "Agile", "SQL", "JIRA", "Roadmapping", "User Research", "Figma"],
+    "years_experience": 8,
+    "past_roles": ["Senior PM at Zomato", "PM at MakeMyTrip"],
+    "short_summary": "Senior product manager who has launched 15+ features at scale. Strong analytical background with SQL skills. No direct engineering experience but strong cross-functional leadership.",
+    "location": "Bangalore, India",
+    "education": "MBA, IIM Ahmedabad"
+  },
+  {
+    "id": "C008",
+    "name": "Karan Joshi",
+    "skills": ["Python", "scikit-learn", "Pandas", "Tableau", "SQL", "A/B Testing", "Excel"],
+    "years_experience": 2,
+    "past_roles": ["Junior Data Analyst at Groww", "Data Science Intern at Accenture"],
+    "short_summary": "Early-career data analyst with solid Python and visualization skills. Has worked on churn prediction and cohort analysis. Actively upskilling in ML and AI. Very enthusiastic learner.",
+    "location": "Ahmedabad, India",
+    "education": "B.Sc Statistics, Gujarat University"
+  },
+  {
+    "id": "C009",
+    "name": "Ananya Iyer",
+    "skills": ["Python", "FastAPI", "PostgreSQL", "Redis", "Docker", "Microservices", "Kafka", "SQLAlchemy"],
+    "years_experience": 5,
+    "past_roles": ["Backend Engineer at CRED", "Software Engineer at Freshworks"],
+    "short_summary": "Backend specialist building high-throughput APIs and event-driven systems. Designed payment processing systems handling 1M txn/day. Open to full-stack AI backend roles.",
+    "location": "Chennai, India",
+    "education": "B.Tech CSE, SSN College of Engineering"
+  },
+  {
+    "id": "C010",
+    "name": "Rahul Gupta",
+    "skills": ["Machine Learning", "Python", "Recommendation Systems", "PySpark", "AWS SageMaker", "MLflow", "SQL"],
+    "years_experience": 6,
+    "past_roles": ["ML Engineer at Amazon", "Applied Scientist at Walmart Labs"],
+    "short_summary": "ML engineer with 6 years at top product companies. Built and deployed recommendation systems serving 50M users. Strong MLOps skills. Passively looking for exciting challenges.",
+    "location": "Hyderabad, India",
+    "education": "M.S. Computer Science, University of Texas"
+  },
+  {
+    "id": "C011",
+    "name": "Shruti Verma",
+    "skills": ["Generative AI", "LangChain", "RAG", "Python", "Pinecone", "OpenAI", "AWS Bedrock", "Prompt Engineering"],
+    "years_experience": 4,
+    "past_roles": ["AI Engineer at Sprinklr", "ML Researcher at IIIT Hyderabad"],
+    "short_summary": "AI engineer specializing in generative AI applications and RAG architectures. Built enterprise chatbots and document Q&A systems. Actively seeking cutting-edge GenAI roles.",
+    "location": "Hyderabad, India",
+    "education": "M.Tech CSE, IIIT Hyderabad"
+  },
+  {
+    "id": "C012",
+    "name": "Nikhil Das",
+    "skills": ["Rust", "C++", "Systems Programming", "WASM", "Performance Optimization", "Linux"],
+    "years_experience": 7,
+    "past_roles": ["Systems Engineer at Samsara", "Senior SDE at InMobi"],
+    "short_summary": "Low-level systems engineer with deep expertise in Rust and C++. Built high-performance ad-serving infrastructure. Limited AI/ML background but very strong engineering fundamentals.",
+    "location": "Bangalore, India",
+    "education": "B.Tech CSE, BITS Pilani"
+  },
+  {
+    "id": "C013",
+    "name": "Meera Pillai",
+    "skills": ["Python", "TensorFlow", "MLOps", "Docker", "Kubernetes", "Airflow", "FastAPI", "GCP", "MLflow"],
+    "years_experience": 6,
+    "past_roles": ["MLOps Engineer at PhonePe", "AI Platform Engineer at Intuit"],
+    "short_summary": "MLOps expert who bridges the gap between research and production. Set up end-to-end ML platforms from scratch. Strong communicator and team player. Currently open to opportunities.",
+    "location": "Bangalore, India",
+    "education": "B.Tech CSE, VIT Vellore"
+  },
+  {
+    "id": "C014",
+    "name": "Aditya Bose",
+    "skills": ["Java", "Spring Boot", "Kafka", "MySQL", "REST APIs", "Microservices", "Maven"],
+    "years_experience": 9,
+    "past_roles": ["Tech Lead at Infosys", "Senior SDE at TCS"],
+    "short_summary": "Experienced Java backend developer with strong enterprise software skills. Led teams of 8 engineers. Limited exposure to Python or modern ML tooling but solid architecture knowledge.",
+    "location": "Kolkata, India",
+    "education": "B.Tech CSE, Jadavpur University"
+  },
+  {
+    "id": "C015",
+    "name": "Tanvi Singh",
+    "skills": ["Python", "NLP", "BERT", "Fine-tuning", "FastAPI", "Docker", "SQL", "LangChain", "Transformers", "HuggingFace"],
+    "years_experience": 5,
+    "past_roles": ["NLP/ML Engineer at ShareChat", "Data Scientist at Lenskart"],
+    "short_summary": "Full-stack ML engineer combining NLP expertise with solid engineering practices. Built multilingual content moderation at ShareChat serving 200M users. Highly motivated and a quick learner.",
+    "location": "Noida, India",
+    "education": "M.Tech Data Science, IIT Roorkee"
+  }
+]

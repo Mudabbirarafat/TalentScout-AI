@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>TalentScout AI — Intelligent Talent Matching</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&family=DM+Sans:ital,wght@0,300;0,400;0,500;1,400&display=swap" rel="stylesheet">
+<style>
+/* ── Reset & Variables ───────────────────────────────────────────────── */
+*, *::before, *::after { margin:0; padding:0; box-sizing:border-box; }
+
+:root {
+  --bg:       #070b10;
+  --s1:       #0d1318;
+  --s2:       #121920;
+  --s3:       #18222b;
+  --border:   rgba(255,255,255,0.07);
+  --border2:  rgba(255,255,255,0.12);
+  --cyan:     #00e5ff;
+  --purple:   #7c3aed;
+  --amber:    #f59e0b;
+  --green:    #10b981;
+  --red:      #ef4444;
+  --text:     #dde6f0;
+  --muted:    #55687a;
+  --muted2:   #8899a6;
+  --glow-c:   rgba(0,229,255,0.12);
+  --glow-p:   rgba(124,58,237,0.12);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+  font-size: 15px;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ── Grid bg ─────────────────────────────────────────────────────────── */
+body::before {
+  content:'';
+  position: fixed; inset: 0; z-index: 0;
+  background-image:
+    linear-gradient(rgba(0,229,255,0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0,229,255,0.025) 1px, transparent 1px);
+  background-size: 44px 44px;
+  pointer-events: none;
+}
+
+/* ── Layout ──────────────────────────────────────────────────────────── */
+.wrap { position:relative; z-index:1; max-width:1080px; margin:0 auto; padding:0 20px; }
+
+/* ── HEADER ──────────────────────────────────────────────────────────── */
+header {
+  border-bottom: 1px solid var(--border);
+  padding: 22px 0;
+  position: sticky; top: 0;
+  background: rgba(7,11,16,0.92);
+  backdrop-filter: blur(16px);
+  z-index: 100;
+}
+.hdr { display:flex; align-items:center; justify-content:space-between; gap:16px; }
+.logo { display:flex; align-items:center; gap:12px; text-decoration:none; }
+.logo-mark {
+  width:40px; height:40px; border-radius:10px;
+  background: linear-gradient(135deg,var(--cyan),var(--purple));
+  display:flex; align-items:center; justify-content:center;
+  font-size:18px; flex-shrink:0;
+  box-shadow: 0 0 24px var(--glow-c);
+}
+.logo-name {
+  font-family:'Syne',sans-serif; font-size:20px; font-weight:800;
+  letter-spacing:-0.5px; color:var(--text);
+}
+.logo-name em { color:var(--cyan); font-style:normal; }
+.logo-sub { font-size:11px; color:var(--muted); letter-spacing:0.3px; }
+.version-pill {
+  background: rgba(0,229,255,0.08);
+  border: 1px solid rgba(0,229,255,0.18);
+  color: var(--cyan);
+  font-family:'Space Mono',monospace; font-size:10px;
+  padding:4px 10px; border-radius:20px;
+  white-space:nowrap;
+}
+
+/* ── MAIN ────────────────────────────────────────────────────────────── */
+main { padding: 36px 0 80px; }
+
+/* ── SECTION LABEL ───────────────────────────────────────────────────── */
+.lbl {
+  font-family:'Space Mono',monospace;
+  font-size:10px; font-weight:700;
+  letter-spacing:3px; text-transform:uppercase;
+  color:var(--muted); margin-bottom:12px;
+}
+
+/* ── PANELS ──────────────────────────────────────────────────────────── */
+.panel {
+  background: var(--s1);
+  border: 1px solid var(--border);
+  border-radius:16px;
+  padding:24px;
+  margin-bottom:20px;
+}
+.panel-hdr {
+  display:flex; align-items:center; gap:10px; margin-bottom:18px;
+}
+.ph-icon {
+  width:30px; height:30px; border-radius:8px;
+  background: linear-gradient(135deg,var(--glow-c),var(--glow-p));
+  border:1px solid var(--border2);
+  display:flex; align-items:center; justify-content:center; font-size:14px;
+}
+.ph-title {
+  font-family:'Syne',sans-serif; font-size:15px; font-weight:700;
+}
+
+/* ── JD TEXTAREA ─────────────────────────────────────────────────────── */
+textarea#jd {
+  width:100%; height:190px;
+  background: var(--s2); border:1px solid var(--border);
+  border-radius:12px; padding:16px;
+  color:var(--text); font-family:'DM Sans',sans-serif; font-size:14px;
+  line-height:1.65; resize:vertical; outline:none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+textarea#jd:focus {
+  border-color: rgba(0,229,255,0.35);
+  box-shadow: 0 0 0 3px rgba(0,229,255,0.06);
+}
+textarea#jd::placeholder { color:var(--muted); }
+
+/* ── SAMPLE CHIPS ────────────────────────────────────────────────────── */
+.chips { display:flex; gap:8px; flex-wrap:wrap; margin-top:12px; }
+.chip {
+  background:var(--s2); border:1px solid var(--border);
+  color:var(--muted2); font-size:12px; padding:5px 13px;
+  border-radius:20px; cursor:pointer;
+  transition: all 0.15s;
+}
+.chip:hover { border-color:rgba(0,229,255,0.3); color:var(--cyan); background:rgba(0,229,255,0.05); }
+
+/* ── CONTROLS ROW ────────────────────────────────────────────────────── */
+.ctrl-row {
+  display:flex; gap:10px; flex-wrap:wrap; align-items:center; margin-top:16px;
+}
+.field {
+  display:flex; align-items:center; gap:8px;
+  background:var(--s2); border:1px solid var(--border);
+  border-radius:10px; padding:10px 14px;
+}
+.field label { font-size:12px; color:var(--muted); white-space:nowrap; }
+.field input, .field select {
+  background:transparent; border:none; outline:none;
+  color:var(--text); font-family:'Space Mono',monospace; font-size:12px;
+}
+.field.grow { flex:1; min-width:220px; }
+.field input::placeholder { color:var(--muted); }
+.field select option { background:var(--s2); }
+
+.btn-run {
+  background: linear-gradient(135deg,var(--cyan),#0ea5e9);
+  color:#000; font-family:'Syne',sans-serif;
+  font-size:13px; font-weight:800; letter-spacing:0.5px;
+  border:none; padding:11px 26px; border-radius:10px;
+  cursor:pointer; white-space:nowrap;
+  box-shadow: 0 0 24px rgba(0,229,255,0.25);
+  transition: all 0.2s;
+}
+.btn-run:hover { transform:translateY(-1px); box-shadow:0 0 36px rgba(0,229,255,0.4); }
+.btn-run:disabled { opacity:0.45; cursor:not-allowed; transform:none; box-shadow:none; }
+
+/* ── ERROR / STATUS ──────────────────────────────────────────────────── */
+.err-box {
+  background:rgba(239,68,68,0.07); border:1px solid rgba(239,68,68,0.2);
+  color:#fca5a5; border-radius:12px; padding:14px 18px;
+  font-size:13px; margin-bottom:18px; display:none;
+}
+.status-bar {
+  background:rgba(0,229,255,0.05); border:1px solid rgba(0,229,255,0.14);
+  border-radius:12px; padding:13px 18px; margin-bottom:20px;
+  font-family:'Space Mono',monospace; font-size:11px; color:var(--cyan);
+  display:none; align-items:center; gap:12px;
+}
+.spin {
+  width:15px; height:15px; border-radius:50%;
+  border:2px solid rgba(0,229,255,0.2);
+  border-top-color:var(--cyan);
+  animation:spin 0.75s linear infinite; flex-shrink:0;
+}
+@keyframes spin { to { transform:rotate(360deg); } }
+
+/* ── PARSED JD ───────────────────────────────────────────────────────── */
+#parsed-jd { display:none; }
+.pj-grid {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+  gap:12px;
+}
+.pj-item label {
+  display:block; font-size:10px; font-weight:700;
+  letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--muted); margin-bottom:6px;
+}
+.pj-item .pj-val {
+  font-family:'Space Mono',monospace; font-size:13px; color:var(--text);
+}
+.tag-row { display:flex; flex-wrap:wrap; gap:6px; }
+.tag {
+  font-family:'Space Mono',monospace; font-size:10px;
+  padding:3px 9px; border-radius:6px;
+}
+.tag.cyan  { background:rgba(0,229,255,0.08); border:1px solid rgba(0,229,255,0.18); color:var(--cyan); }
+.tag.purple{ background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.22); color:#a78bfa; }
+
+/* ── RESULTS SECTION ─────────────────────────────────────────────────── */
+#results { display:none; }
+.results-hdr {
+  display:flex; align-items:flex-end; justify-content:space-between;
+  gap:12px; flex-wrap:wrap; margin-bottom:18px;
+}
+.formula-box {
+  font-family:'Space Mono',monospace; font-size:10px; color:var(--muted2);
+  background:var(--s1); border:1px solid var(--border);
+  padding:7px 13px; border-radius:8px; white-space:nowrap;
+}
+.formula-box b { color:var(--amber); }
+
+/* ── CANDIDATE CARDS ─────────────────────────────────────────────────── */
+.card {
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:16px; padding:22px 24px;
+  margin-bottom:14px; position:relative;
+  overflow:hidden;
+  transition: border-color 0.2s, transform 0.15s;
+}
+.card::before {
+  content:''; position:absolute;
+  left:0; top:0; bottom:0; width:3px;
+  background:linear-gradient(180deg,var(--cyan),var(--purple));
+}
+.card.r1::before { background:linear-gradient(180deg,#ffd700,#f59e0b); }
+.card.r2::before { background:linear-gradient(180deg,#d4d4d4,#94a3b8); }
+.card.r3::before { background:linear-gradient(180deg,#cd7f32,#a16207); }
+.card:hover { border-color:var(--border2); transform:translateX(3px); }
+
+.card-top {
+  display:flex; align-items:flex-start; gap:14px; flex-wrap:wrap;
+  margin-bottom:16px;
+}
+.rank-num {
+  font-family:'Syne',sans-serif; font-size:12px; font-weight:800;
+  min-width:28px; padding-top:2px;
+  color:var(--muted);
+}
+.rank-num.r1 { color:#ffd700; } .rank-num.r2 { color:#d4d4d4; } .rank-num.r3 { color:#cd7f32; }
+
+.cand-info { flex:1; min-width:0; }
+.cand-name {
+  font-family:'Syne',sans-serif; font-size:18px; font-weight:700;
+  line-height:1.2;
+}
+.cand-meta { font-size:12px; color:var(--muted2); margin-top:3px; }
+
+.interest-badge {
+  display:inline-flex; align-items:center; gap:5px;
+  font-size:11px; font-weight:600;
+  padding:4px 11px; border-radius:20px;
+  white-space:nowrap;
+}
+.ib-high   { background:rgba(16,185,129,0.1);  border:1px solid rgba(16,185,129,0.22);  color:var(--green); }
+.ib-medium { background:rgba(245,158,11,0.1);  border:1px solid rgba(245,158,11,0.22);  color:var(--amber); }
+.ib-low    { background:rgba(239,68,68,0.1);   border:1px solid rgba(239,68,68,0.22);   color:var(--red); }
+.ib-dot { width:6px; height:6px; border-radius:50%; background:currentColor; }
+
+/* Score boxes */
+.scores-row { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.sc-box {
+  background:var(--s2); border:1px solid var(--border);
+  border-radius:10px; padding:10px 15px; text-align:center; min-width:82px;
+}
+.sc-box label {
+  display:block; font-size:9px; letter-spacing:2px;
+  text-transform:uppercase; color:var(--muted); margin-bottom:3px;
+}
+.sc-num { font-family:'Space Mono',monospace; font-size:20px; font-weight:700; }
+.sc-num.s-match    { color:var(--cyan); }
+.sc-num.s-interest { color:#a78bfa; }
+.sc-num.s-final    { color:var(--amber); }
+
+/* Score bars */
+.bars { display:flex; flex-direction:column; gap:7px; margin-bottom:2px; }
+.bar-row { display:flex; align-items:center; gap:10px; }
+.bar-lbl { font-size:11px; color:var(--muted); width:62px; flex-shrink:0; }
+.bar-track {
+  flex:1; height:5px; background:var(--s3); border-radius:3px; overflow:hidden;
+}
+.bar-fill {
+  height:100%; border-radius:3px;
+  transition:width 1s cubic-bezier(0.34,1.2,0.64,1);
+  width:0%;
+}
+.bf-match    { background:linear-gradient(90deg,#0284c7,var(--cyan)); }
+.bf-interest { background:linear-gradient(90deg,var(--purple),#a78bfa); }
+.bf-final    { background:linear-gradient(90deg,#b45309,var(--amber)); }
+.bar-pct { font-family:'Space Mono',monospace; font-size:10px; color:var(--muted); width:32px; text-align:right; }
+
+/* Expand button */
+.expand-btn {
+  background:none; border:none; color:var(--muted2);
+  font-family:'Space Mono',monospace; font-size:11px;
+  cursor:pointer; display:flex; align-items:center; gap:6px;
+  margin-top:12px; padding:0;
+  transition:color 0.15s;
+}
+.expand-btn:hover { color:var(--cyan); }
+.expand-btn .arr { transition:transform 0.2s; display:inline-block; }
+.expand-btn.open .arr { transform:rotate(180deg); }
+
+/* Expandable detail */
+.detail { display:none; margin-top:14px; }
+.detail.open { display:block; }
+
+.explain-box {
+  background:var(--s2);
+  border:1px solid var(--border);
+  border-left:3px solid rgba(0,229,255,0.28);
+  border-radius:10px; padding:13px 16px;
+  font-size:13px; color:#94a3b8; line-height:1.7;
+  margin-bottom:12px;
+}
+.sim-box {
+  background:rgba(124,58,237,0.06);
+  border:1px solid rgba(124,58,237,0.18);
+  border-radius:10px; padding:13px 16px;
+  margin-bottom:12px;
+}
+.sim-label {
+  font-size:9px; letter-spacing:2.5px; text-transform:uppercase;
+  color:var(--muted); display:block; margin-bottom:6px;
+}
+.sim-text { font-size:13px; font-style:italic; color:#c4b5fd; line-height:1.65; }
+
+.detail-skills { display:flex; flex-wrap:wrap; gap:6px; margin-bottom:10px; }
+.detail-summary { font-size:12px; color:var(--muted2); line-height:1.6; }
+
+/* ── STATS BAR ────────────────────────────────────────────────────────── */
+.stats-bar {
+  display:flex; gap:20px; flex-wrap:wrap;
+  background:var(--s1); border:1px solid var(--border);
+  border-radius:12px; padding:16px 20px; margin-bottom:20px;
+}
+.stat { text-align:center; }
+.stat-val { font-family:'Space Mono',monospace; font-size:22px; font-weight:700; color:var(--cyan); }
+.stat-lbl { font-size:11px; color:var(--muted); margin-top:2px; }
+
+/* ── PIPELINE STEPS ──────────────────────────────────────────────────── */
+.pipeline {
+  display:flex; gap:0; margin-bottom:28px; overflow-x:auto;
+  padding-bottom:4px;
+}
+.step {
+  display:flex; align-items:center; gap:0; flex-shrink:0;
+}
+.step-box {
+  background:var(--s2); border:1px solid var(--border);
+  border-radius:10px; padding:10px 14px;
+  font-size:11px; color:var(--muted2);
+  white-space:nowrap;
+}
+.step-box.active { border-color:rgba(0,229,255,0.3); color:var(--cyan); background:rgba(0,229,255,0.05); }
+.step-box.done   { border-color:rgba(16,185,129,0.3); color:var(--green); background:rgba(16,185,129,0.05); }
+.step-arrow { color:var(--border2); padding:0 6px; font-size:14px; }
+
+/* ── FOOTER ──────────────────────────────────────────────────────────── */
+footer {
+  border-top:1px solid var(--border);
+  padding:20px 0;
+  text-align:center;
+  font-family:'Space Mono',monospace; font-size:10px; color:var(--muted);
+}
+footer b { color:var(--cyan); }
+
+/* ── Responsive ──────────────────────────────────────────────────────── */
+@media(max-width:600px) {
+  .ctrl-row { flex-direction:column; }
+  .field.grow { width:100%; }
+  .btn-run { width:100%; text-align:center; }
+  .results-hdr { flex-direction:column; align-items:flex-start; }
+}
+</style>
+</head>
+<body>
+
+<!-- ── HEADER ─────────────────────────────────────────────────────────── -->
+<header>
+  <div class="wrap">
+    <div class="hdr">
+      <a class="logo" href="#">
+        <div class="logo-mark">🎯</div>
+        <div>
+          <div class="logo-name">Talent<em>Scout</em> AI</div>
+          <div class="logo-sub">AI-Powered Talent Intelligence Agent</div>
+        </div>
+      </a>
+      <div class="version-pill">v1.0 · HACKATHON BUILD</div>
+    </div>
+  </div>
+</header>
+
+<!-- ── MAIN ───────────────────────────────────────────────────────────── -->
+<main>
+<div class="wrap">
+
+  <!-- Pipeline visualization -->
+  <div class="pipeline" id="pipeline">
+    <div class="step"><div class="step-box" id="step1">📋 JD Input</div><div class="step-arrow">→</div></div>
+    <div class="step"><div class="step-box" id="step2">🔍 Parse JD</div><div class="step-arrow">→</div></div>
+    <div class="step"><div class="step-box" id="step3">🧮 Match Score</div><div class="step-arrow">→</div></div>
+    <div class="step"><div class="step-box" id="step4">💬 Interest Sim</div><div class="step-arrow">→</div></div>
+    <div class="step"><div class="step-box" id="step5">🏆 Final Rank</div></div>
+  </div>
+
+  <!-- JD Panel -->
+  <div class="panel">
+    <div class="panel-hdr">
+      <div class="ph-icon">📋</div>
+      <div class="ph-title">Job Description</div>
+    </div>
+
+    <textarea id="jd" placeholder="Paste your full Job Description here...
+
+Example:
+We are hiring a Senior ML Engineer with 5+ years in Python, TensorFlow, and AWS SageMaker. The candidate should have experience deploying production ML systems, MLOps pipelines, and microservices via FastAPI and Docker..."></textarea>
+
+    <div style="margin-top:10px">
+      <div class="lbl" style="margin-bottom:7px">Quick sample JDs</div>
+      <div class="chips">
+        <div class="chip" onclick="loadSample('ml')">🤖 Senior ML Engineer</div>
+        <div class="chip" onclick="loadSample('nlp')">🧠 NLP / GenAI Engineer</div>
+        <div class="chip" onclick="loadSample('mlops')">🔧 MLOps Engineer</div>
+        <div class="chip" onclick="loadSample('backend')">⚙️ Backend Engineer</div>
+      </div>
+    </div>
+
+    <div class="ctrl-row">
+      <div class="field grow">
+        <label>🔑</label>
+        <input type="password" id="api-key" placeholder="GROQ API key (Bearer token)" autocomplete="off">
+      </div>
+      <div class="field">
+        <label>Top</label>
+        <select id="top-k">
+          <option value="3">3</option>
+          <option value="5" selected>5</option>
+          <option value="7">7</option>
+          <option value="10">10</option>
+        </select>
+        <label>results</label>
+      </div>
+      <button class="btn-run" id="run-btn" onclick="runScout()">⚡ Scout Talent</button>
+    </div>
+  </div>
+
+  <!-- Error -->
+  <div class="err-box" id="err"></div>
+
+  <!-- Status -->
+  <div class="status-bar" id="status">
+    <div class="spin"></div>
+    <span id="status-msg">Initializing...</span>
+  </div>
+
+  <!-- Parsed JD -->
+  <div class="panel" id="parsed-jd">
+    <div class="panel-hdr">
+      <div class="ph-icon">🔍</div>
+      <div class="ph-title">Parsed JD Requirements</div>
+    </div>
+    <div class="pj-grid" id="pj-content"></div>
+  </div>
+
+  <!-- Results -->
+  <div id="results">
+    <div class="results-hdr">
+      <div>
+        <div class="lbl">Ranked Shortlist</div>
+        <div id="results-sub" style="font-size:13px;color:var(--muted2)"></div>
+      </div>
+      <div class="formula-box">Final = <b>0.70×</b>Match + <b>0.30×</b>Interest</div>
+    </div>
+
+    <!-- Stats -->
+    <div class="stats-bar" id="stats-bar"></div>
+
+    <!-- Cards -->
+    <div id="cards"></div>
+  </div>
+
+</div>
+</main>
+
+<footer>
+  <div class="wrap">
+    Built for Hackathon · <b>TalentScout AI</b> · Powered by GROQ ·
+    Skill Matching + Interest Simulation + Explainable Rankings
+  </div>
+</footer>
+
+<!-- ── SCRIPTS ──────────────────────────────────────────────────────────── -->
+<script>
+// ── Sample JDs ────────────────────────────────────────────────────────────────
+const SAMPLES = {
+  ml: `We are hiring a Senior Machine Learning Engineer to join our AI Platform team.
+
+Requirements:
+- 5+ years of experience in Python, TensorFlow or PyTorch
+- Strong background in building and deploying production ML systems
+- Experience with AWS SageMaker and Docker/Kubernetes
+- Familiarity with MLflow or similar MLOps tooling
+- Proven track record with recommendation systems or NLP applications
+- Strong SQL skills and experience with large-scale data
+
+Role type: Senior Individual Contributor | Location: Bangalore / Remote`,
+
+  nlp: `We are looking for an AI/NLP Engineer with expertise in Large Language Models and RAG systems.
+
+Requirements:
+- 3-6 years of experience in NLP or Generative AI
+- Hands-on experience with LangChain, RAG frameworks and vector databases (FAISS, Pinecone)
+- Proficiency in Python and HuggingFace Transformers
+- Familiarity with OpenAI API or GROQ
+- FastAPI for model serving
+- Fine-tuning experience with BERT or similar transformer models
+
+Role: Mid-Senior NLP/GenAI Engineer | Team: AI Products`,
+
+  mlops: `MLOps / AI Platform Engineer
+
+We are building our internal ML Platform and need an experienced MLOps engineer.
+
+Requirements:
+- 4-7 years of experience in DevOps or MLOps
+- Strong Python skills with Airflow orchestration experience
+- Kubernetes, Docker, Terraform expertise
+- GCP or AWS cloud platform experience
+- MLflow or similar model registries
+- CI/CD pipeline design for ML workflows
+- This is a senior role with team leadership expectations.`,
+
+  backend: `Senior Backend Engineer — High-Throughput Systems
+
+We need a backend engineer who thrives in high-scale environments.
+
+Requirements:
+- 5-8 years of Python backend development
+- FastAPI or Flask microservices architecture
+- PostgreSQL, Redis, Kafka experience
+- Docker and Kubernetes for containerization
+- Strong understanding of distributed systems
+- REST API design and implementation
+- Nice to have: Some exposure to ML model serving`,
+};
+
+function loadSample(key) {
+  document.getElementById('jd').value = SAMPLES[key];
+}
+
+// ── Embedded candidate dataset ────────────────────────────────────────────────
+const CANDIDATES = [
+  {id:"C001",name:"Ayesha Raza",skills:["Python","Machine Learning","TensorFlow","AWS","FastAPI","Docker","SQL","MLflow"],years_experience:6,past_roles:["Senior ML Engineer at Flipkart","Data Scientist at Razorpay"],short_summary:"Senior ML engineer with strong production ML systems experience. Built recommendation engines and fraud detection pipelines at scale. Actively looking for senior AI roles.",location:"Bangalore",education:"B.Tech CSE, IIT Bombay"},
+  {id:"C002",name:"Rohan Mehta",skills:["JavaScript","React","Node.js","MongoDB","GraphQL","TypeScript","CSS"],years_experience:4,past_roles:["Frontend Engineer at Swiggy","Full Stack Developer at a Startup"],short_summary:"Full-stack developer specializing in React ecosystems and Node.js microservices. Built real-time dashboards for 500K+ users. Open to exploring new tech stacks.",location:"Mumbai",education:"B.E. IT, Mumbai University"},
+  {id:"C003",name:"Priya Nair",skills:["Python","NLP","Hugging Face","LangChain","OpenAI API","PyTorch","Vector Databases","FAISS"],years_experience:5,past_roles:["NLP Engineer at Sarvam AI","Research Engineer at IISc"],short_summary:"NLP specialist with deep expertise in LLMs, RAG pipelines, and fine-tuning. Published research on multilingual models. Very passionate about building AI products.",location:"Bangalore",education:"M.Tech AI, IISc Bangalore"},
+  {id:"C004",name:"Arjun Sharma",skills:["DevOps","Kubernetes","Terraform","AWS","GCP","CI/CD","Prometheus","Helm"],years_experience:7,past_roles:["DevOps Lead at Paytm","SRE at Ola"],short_summary:"Seasoned DevOps engineer who has managed infrastructure at scale for 10M+ user apps. Expert in Kubernetes orchestration and cost optimization.",location:"Delhi",education:"B.Tech, NSIT Delhi"},
+  {id:"C005",name:"Sneha Kapoor",skills:["Data Engineering","Apache Spark","Kafka","Python","Airflow","Snowflake","dbt","SQL"],years_experience:5,past_roles:["Data Engineer at Meesho","Analytics Engineer at Myntra"],short_summary:"Data engineer focused on building robust ETL pipelines and data warehouses. Reduced pipeline latency by 60% at Meesho. Currently exploring ML engineering opportunities.",location:"Hyderabad",education:"B.Tech CSE, NIT Warangal"},
+  {id:"C006",name:"Vikram Patel",skills:["Python","Deep Learning","Computer Vision","OpenCV","ONNX","Edge AI","TensorFlow Lite"],years_experience:3,past_roles:["Computer Vision Engineer at Detect Technologies","Research Intern at DRDO"],short_summary:"Computer vision engineer with hands-on experience in defect detection and edge inference. Eager to grow into senior AI engineering roles.",location:"Pune",education:"M.Tech ECE, IIT Kharagpur"},
+  {id:"C007",name:"Divya Menon",skills:["Product Management","Agile","SQL","JIRA","Roadmapping","User Research","Figma"],years_experience:8,past_roles:["Senior PM at Zomato","PM at MakeMyTrip"],short_summary:"Senior product manager who has launched 15+ features at scale. Strong analytical background. No direct engineering experience but strong cross-functional leadership.",location:"Bangalore",education:"MBA, IIM Ahmedabad"},
+  {id:"C008",name:"Karan Joshi",skills:["Python","scikit-learn","Pandas","Tableau","SQL","A/B Testing","Excel"],years_experience:2,past_roles:["Junior Data Analyst at Groww","Data Science Intern at Accenture"],short_summary:"Early-career data analyst with solid Python and visualization skills. Actively upskilling in ML and AI. Very enthusiastic learner.",location:"Ahmedabad",education:"B.Sc Statistics, Gujarat University"},
+  {id:"C009",name:"Ananya Iyer",skills:["Python","FastAPI","PostgreSQL","Redis","Docker","Microservices","Kafka","SQLAlchemy"],years_experience:5,past_roles:["Backend Engineer at CRED","Software Engineer at Freshworks"],short_summary:"Backend specialist building high-throughput APIs and event-driven systems. Designed payment processing systems handling 1M txn/day. Open to full-stack AI backend roles.",location:"Chennai",education:"B.Tech CSE, SSN College"},
+  {id:"C010",name:"Rahul Gupta",skills:["Machine Learning","Python","Recommendation Systems","PySpark","AWS SageMaker","MLflow","SQL"],years_experience:6,past_roles:["ML Engineer at Amazon","Applied Scientist at Walmart Labs"],short_summary:"ML engineer with 6 years at top product companies. Built and deployed recommendation systems serving 50M users. Strong MLOps skills. Passively looking for exciting challenges.",location:"Hyderabad",education:"M.S. CS, University of Texas"},
+  {id:"C011",name:"Shruti Verma",skills:["Generative AI","LangChain","RAG","Python","Pinecone","OpenAI","AWS Bedrock","Prompt Engineering"],years_experience:4,past_roles:["AI Engineer at Sprinklr","ML Researcher at IIIT Hyderabad"],short_summary:"AI engineer specializing in generative AI applications and RAG architectures. Built enterprise chatbots and document Q&A systems. Actively seeking cutting-edge GenAI roles.",location:"Hyderabad",education:"M.Tech CSE, IIIT Hyderabad"},
+  {id:"C012",name:"Nikhil Das",skills:["Rust","C++","Systems Programming","WASM","Performance Optimization","Linux"],years_experience:7,past_roles:["Systems Engineer at Samsara","Senior SDE at InMobi"],short_summary:"Low-level systems engineer with deep expertise in Rust and C++. Built high-performance ad-serving infrastructure. Limited AI/ML background but very strong engineering fundamentals.",location:"Bangalore",education:"B.Tech CSE, BITS Pilani"},
+  {id:"C013",name:"Meera Pillai",skills:["Python","TensorFlow","MLOps","Docker","Kubernetes","Airflow","FastAPI","GCP","MLflow"],years_experience:6,past_roles:["MLOps Engineer at PhonePe","AI Platform Engineer at Intuit"],short_summary:"MLOps expert who bridges the gap between research and production. Set up end-to-end ML platforms from scratch. Strong communicator and team player. Currently open to opportunities.",location:"Bangalore",education:"B.Tech CSE, VIT Vellore"},
+  {id:"C014",name:"Aditya Bose",skills:["Java","Spring Boot","Kafka","MySQL","REST APIs","Microservices","Maven"],years_experience:9,past_roles:["Tech Lead at Infosys","Senior SDE at TCS"],short_summary:"Experienced Java backend developer with strong enterprise software skills. Led teams of 8 engineers. Limited exposure to Python or modern ML tooling.",location:"Kolkata",education:"B.Tech CSE, Jadavpur University"},
+  {id:"C015",name:"Tanvi Singh",skills:["Python","NLP","BERT","Fine-tuning","FastAPI","Docker","SQL","LangChain","Transformers","HuggingFace"],years_experience:5,past_roles:["NLP/ML Engineer at ShareChat","Data Scientist at Lenskart"],short_summary:"Full-stack ML engineer combining NLP expertise with solid engineering practices. Built multilingual content moderation at ShareChat serving 200M users. Highly motivated.",location:"Noida",education:"M.Tech Data Science, IIT Roorkee"},
+];
+
+// ── State & Helpers ───────────────────────────────────────────────────────────
+let isRunning = false;
+
+function pct(v)  { return Math.round(v * 100) + '%'; }
+function setStatus(msg, show=true) {
+  const bar = document.getElementById('status');
+  bar.style.display = show ? 'flex' : 'none';
+  if (msg) document.getElementById('status-msg').textContent = msg;
+}
+function showErr(msg) {
+  const b = document.getElementById('err');
+  b.textContent = '⚠️  ' + msg;
+  b.style.display = 'block';
+}
+function hideErr() { document.getElementById('err').style.display='none'; }
+
+function setStep(n, state='active') {
+  for(let i=1;i<=5;i++) {
+    const el=document.getElementById('step'+i);
+    el.classList.remove('active','done');
+  }
+  for(let i=1;i<n;i++) document.getElementById('step'+i).classList.add('done');
+  if(n<=5) document.getElementById('step'+n).classList.add(state);
+}
+
+// ── Skill matching (client-side) ──────────────────────────────────────────────
+function skillOverlap(jdSkills, candSkills) {
+  if (!jdSkills.length) return 0;
+  const js = new Set(jdSkills.map(s=>s.toLowerCase()));
+  const cs = new Set(candSkills.map(s=>s.toLowerCase()));
+  const inter = [...js].filter(x=>cs.has(x)).length;
+  const union  = new Set([...js,...cs]).size;
+  const jaccard  = inter/union;
+  const coverage = inter/js.size;
+  return 0.5*jaccard + 0.5*coverage;
+}
+
+function expScore(expStr, years) {
+  const nums = (expStr||'').match(/\d+/g)||[];
+  if (!nums.length) return 0.7;
+  const min = parseInt(nums[0]);
+  const max = nums.length>1 ? parseInt(nums[1]) : min+3;
+  if (years < min) return Math.max(0, 0.5 - 0.07*(min-years));
+  if (years > max+3) return 0.75;
+  return 1.0;
+}
+
+function kwBonus(kws, c) {
+  if (!kws.length) return 0;
+  const txt = (c.short_summary+' '+c.past_roles.join(' ')).toLowerCase();
+  const hits = kws.filter(k=>txt.includes(k.toLowerCase())).length;
+  return Math.min(hits/kws.length*0.15, 0.15);
+}
+
+function computeMatch(jd, c) {
+  const s = skillOverlap(jd.skills||[], c.skills);
+  const e = expScore(jd.experience||'', c.years_experience);
+  const k = kwBonus(jd.keywords||[], c);
+  return parseFloat(Math.min(0.60*s + 0.25*e + k, 1.0).toFixed(3));
+}
+
+// ── GROQ API calls ──────────────────────────────────────────────────────────
+async function callGROQ(apiKey, prompt) {
+  const r = await fetch('https://api.groq.ai/v1/models/groq-1.5-mini/infer',{ 
+    method:'POST',
+    headers:{
+      'Content-Type':'application/json',
+      'Authorization':`Bearer ${apiKey}`,
+    },
+    body:JSON.stringify({
+      input: prompt,
+      max_output_tokens:1024,
+      temperature:0.0,
+    })
+  });
+  if(!r.ok){
+    const e=await r.json().catch(()=>({}));
+    throw new Error(e?.error?.message||`API ${r.status}`);
+  }
+  const d=await r.json();
+  let txt = '';
+  if (Array.isArray(d.output)) {
+    txt = d.output.map(item => typeof item === 'string' ? item : (item?.content || '')).join('');
+  } else if (typeof d.output === 'string') {
+    txt = d.output;
+  } else {
+    txt = d.response || d.text || '';
+  }
+  const clean = txt.replace(/```json|```/g,'').trim();
+  try{ return JSON.parse(clean); }catch{ return txt; }
+}
+
+function jdPrompt(jd){
+  return `Extract structured requirements from this JD. Return ONLY valid JSON with keys: skills (list), experience (string like "4-6 years"), role_type (string), keywords (list), seniority_level (string).
+JD: ${jd}
+Return ONLY the JSON object, no markdown or explanation.`;
+}
+
+function explainPrompt(jd, c){
+  return `JD Required Skills: ${(jd.skills||[]).join(', ')}
+Candidate: ${c.name} | Skills: ${c.skills.join(', ')} | Exp: ${c.years_experience} yrs
+Summary: ${c.short_summary}
+
+Write exactly 2 sentences:
+1. Whether this is a strong, partial, or weak match and why.
+2. Key overlapping skills and the most critical missing gap.
+Be specific and direct.`;
+}
+
+function interestPrompt(jd, c){
+  const top = (jd.skills||[]).slice(0,3).join(', ')||'relevant technologies';
+  const kws = (jd.keywords||[]).slice(0,3).join(', ')||'this domain';
+  return `Simulate a realistic candidate reply to this recruiter message:
+"Hi ${c.name}, we have a ${jd.role_type||'senior engineering'} opportunity aligned with your background in ${top}. It involves ${kws}. Would you be open to a quick 15-min chat?"
+
+Candidate: ${c.short_summary} | Roles: ${c.past_roles.join('; ')} | ${c.years_experience} years experience
+
+Return ONLY JSON:
+{"response":"1-2 sentence authentic reply","interest_level":"High"|"Medium"|"Low","score":0.0-1.0}
+High=0.75-1.0, Medium=0.40-0.74, Low=0.00-0.39. Make it realistic for this specific profile.`;
+}
+
+// ── Render Functions ──────────────────────────────────────────────────────────
+function renderParsedJD(data) {
+  document.getElementById('parsed-jd').style.display='block';
+  const skillHtml = (data.skills||[]).map(s=>`<span class="tag cyan">${s}</span>`).join('');
+  const kwHtml    = (data.keywords||[]).map(k=>`<span class="tag purple">${k}</span>`).join('');
+  document.getElementById('pj-content').innerHTML = `
+    <div class="pj-item"><label>Role Type</label><div class="pj-val">${data.role_type||'—'}</div></div>
+    <div class="pj-item"><label>Experience</label><div class="pj-val">${data.experience||'—'}</div></div>
+    <div class="pj-item"><label>Seniority</label><div class="pj-val">${data.seniority_level||'—'}</div></div>
+    <div class="pj-item" style="grid-column:1/-1"><label>Required Skills</label><div class="tag-row">${skillHtml}</div></div>
+    <div class="pj-item" style="grid-column:1/-1"><label>Keywords</label><div class="tag-row">${kwHtml}</div></div>
+  `;
+}
+
+function renderStats(results) {
+  const avgMatch    = (results.reduce((a,r)=>a+r.match_score,0)/results.length*100).toFixed(0);
+  const avgInterest = (results.reduce((a,r)=>a+r.interest_score,0)/results.length*100).toFixed(0);
+  const highCount   = results.filter(r=>r.interest_level==='High').length;
+  document.getElementById('stats-bar').innerHTML = `
+    <div class="stat"><div class="stat-val">${results.length}</div><div class="stat-lbl">Shortlisted</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--cyan)">${avgMatch}%</div><div class="stat-lbl">Avg Match</div></div>
+    <div class="stat"><div class="stat-val" style="color:#a78bfa">${avgInterest}%</div><div class="stat-lbl">Avg Interest</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--green)">${highCount}</div><div class="stat-lbl">High Interest</div></div>
+    <div class="stat"><div class="stat-val" style="color:var(--amber)">${CANDIDATES.length}</div><div class="stat-lbl">Pool Size</div></div>
+  `;
+}
+
+function ibClass(level){
+  return level==='High'?'ib-high':level==='Medium'?'ib-medium':'ib-low';
+}
+
+function renderCards(results) {
+  document.getElementById('results').style.display='block';
+  document.getElementById('results-sub').textContent =
+    `Top ${results.length} of ${CANDIDATES.length} candidates ranked by Final Score`;
+
+  renderStats(results);
+
+  const container = document.getElementById('cards');
+  container.innerHTML='';
+
+  results.forEach((c,i)=>{
+    const rankClass = i===0?'r1':i===1?'r2':i===2?'r3':'';
+    const medal     = i===0?'🥇':i===1?'🥈':i===2?'🥉':`#${i+1}`;
+    const skillsHtml= c.skills.map(s=>`<span class="tag purple">${s}</span>`).join('');
+
+    const div = document.createElement('div');
+    div.className=`card ${rankClass}`;
+    div.innerHTML=`
+      <div class="card-top">
+        <div class="rank-num ${rankClass}">${medal}</div>
+        <div class="cand-info">
+          <div class="cand-name">${c.name}</div>
+          <div class="cand-meta">${c.years_experience} yrs · ${c.past_roles.join(' · ')} · ${c.location}</div>
+        </div>
+        <span class="interest-badge ${ibClass(c.interest_level)}">
+          <span class="ib-dot"></span>${c.interest_level} Interest
+        </span>
+      </div>
+
+      <div class="scores-row">
+        <div class="sc-box"><label>Match</label><div class="sc-num s-match">${pct(c.match_score)}</div></div>
+        <div class="sc-box"><label>Interest</label><div class="sc-num s-interest">${pct(c.interest_score)}</div></div>
+        <div class="sc-box"><label>Final</label><div class="sc-num s-final">${pct(c.final_score)}</div></div>
+      </div>
+
+      <div class="bars">
+        <div class="bar-row">
+          <span class="bar-lbl">Match</span>
+          <div class="bar-track"><div class="bar-fill bf-match" data-w="${c.match_score*100}%" style="width:0%"></div></div>
+          <span class="bar-pct">${pct(c.match_score)}</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-lbl">Interest</span>
+          <div class="bar-track"><div class="bar-fill bf-interest" data-w="${c.interest_score*100}%" style="width:0%"></div></div>
+          <span class="bar-pct">${pct(c.interest_score)}</span>
+        </div>
+        <div class="bar-row">
+          <span class="bar-lbl">Final</span>
+          <div class="bar-track"><div class="bar-fill bf-final" data-w="${c.final_score*100}%" style="width:0%"></div></div>
+          <span class="bar-pct">${pct(c.final_score)}</span>
+        </div>
+      </div>
+
+      <button class="expand-btn" onclick="toggleDetail(this)">
+        <span class="arr">▾</span> <span class="expand-txt">Show explanation & simulated response</span>
+      </button>
+      <div class="detail">
+        <div class="explain-box">${c.explanation}</div>
+        <div class="sim-box">
+          <span class="sim-label">💬 Simulated candidate response to outreach</span>
+          <div class="sim-text">"${c.simulated_response}"</div>
+        </div>
+        <div class="detail-skills">${skillsHtml}</div>
+        <div class="detail-summary">${c.short_summary} · ${c.education}</div>
+      </div>
+    `;
+    container.appendChild(div);
+  });
+
+  // Animate bars
+  setTimeout(()=>{
+    document.querySelectorAll('.bar-fill').forEach(b=>{b.style.width=b.dataset.w;});
+  }, 120);
+}
+
+function toggleDetail(btn) {
+  btn.classList.toggle('open');
+  const d = btn.nextElementSibling;
+  d.classList.toggle('open');
+  btn.querySelector('.expand-txt').textContent =
+    d.classList.contains('open') ? 'Hide details' : 'Show explanation & simulated response';
+}
+
+// ── Main scout runner ─────────────────────────────────────────────────────────
+async function runScout() {
+  if (isRunning) return;
+  const jdText = document.getElementById('jd').value.trim();
+  const apiKey = document.getElementById('api-key').value.trim();
+  const topK   = parseInt(document.getElementById('top-k').value);
+
+  hideErr();
+  if (!jdText)  { showErr('Please enter a job description.'); return; }
+  if (!apiKey)  { showErr('Please enter your GROQ API key. Get one from platform.groq.ai'); return; }
+
+  isRunning = true;
+  document.getElementById('run-btn').disabled=true;
+  document.getElementById('parsed-jd').style.display='none';
+  document.getElementById('results').style.display='none';
+  document.getElementById('cards').innerHTML='';
+
+  try {
+    // Step 1 → 2: Parse JD
+    setStep(2);
+    setStatus('🔍 Parsing job description with GROQ...');
+    const parsedJD = await callGROQ(apiKey, jdPrompt(jdText));
+    renderParsedJD(parsedJD);
+
+    // Step 3: Match scoring (client-side, instant)
+    setStep(3);
+    setStatus('🧮 Computing match scores across all 15 candidates...');
+    await new Promise(r=>setTimeout(r,300)); // visual pause
+    const scored = CANDIDATES
+      .map(c => [c, computeMatch(parsedJD, c)])
+      .sort((a,b)=>b[1]-a[1])
+      .slice(0, topK * 2);
+
+    // Step 4: LLM calls in parallel batches
+    setStep(4);
+    const results = [];
+    for (let i=0; i<scored.length; i++) {
+      const [c, matchScore] = scored[i];
+      setStatus(`💬 Simulating interest for ${c.name} (${i+1}/${scored.length})...`);
+
+      const [rawExplain, rawInterest] = await Promise.all([
+        callGROQ(apiKey, explainPrompt(parsedJD, c)),
+        callGROQ(apiKey, interestPrompt(parsedJD, c)),
+      ]);
+
+      const explanation = typeof rawExplain === 'string' ? rawExplain : JSON.stringify(rawExplain);
+      const interest    = typeof rawInterest === 'object' ? rawInterest : {};
+      const iScore      = parseFloat(interest.score ?? 0.55);
+      const finalScore  = parseFloat((0.7*matchScore + 0.3*iScore).toFixed(3));
+
+      results.push({
+        ...c,
+        match_score: matchScore,
+        interest_score: iScore,
+        final_score: finalScore,
+        interest_level: interest.interest_level || 'Medium',
+        simulated_response: interest.response || 'Thanks for reaching out.',
+        explanation: explanation.trim(),
+      });
+    }
+
+    // Step 5: Final rank
+    setStep(5,'done');
+    setStatus('', false);
+    results.sort((a,b)=>b.final_score-a.final_score);
+    renderCards(results.slice(0, topK));
+
+  } catch(err) {
+    setStatus('', false);
+    setStep(1);
+    showErr(err.message || 'Something went wrong. Check your API key and try again.');
+  } finally {
+    isRunning=false;
+    document.getElementById('run-btn').disabled=false;
+  }
+}
+</script>
+</body>
+</html>
